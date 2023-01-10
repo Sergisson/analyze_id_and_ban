@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "user_suspicion_rate_analyzer"
+version = "0.1.0"
+description = "1"
+authors = ["Sergisson <abloyxob@gmail.com>"]
+readme = "README.md"
+packages = [{include = "user_suspicion_rate_analyzer"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sanic = "^22.9.1"
+aioredis = "^2.0.1"
+environs = "^9.5.0"
+aio-pika = "^8.3.0"
+marshmallow = "^3.19.0"
+sanic-testing = "^22.12.0"
+pytest-asyncio = "^0.20.3"
+sanic-openapi = "^21.12.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.12.0"
+isort = "^5.11.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

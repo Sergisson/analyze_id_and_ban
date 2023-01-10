@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  app:
+    image: my-sanic-image
+    ports:
+      - "8000:8000"
+    restart: always
+    volumes:
+      - ./src:/sanic/src
+    depends_on:
+      - redis
+      - rabbitmq
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB_NAME: 1
+      REDIS_PASSWORD: redis_password
+
+      RABBIT_MQ_HOST: rabbitmq
+      RABBIT_MQ_PORT: 5672
+      RABBIT_MQ_USER: rabbit_mq_user
+      RABBIT_MQ_PASSWORD: rabbit_mq_password
+      RABBIT_MQ_ROUTING_KEY: rabbit_mq_routing_key
+
+      APP_HOST: 0.0.0.0
+      APP_PORT: 8000
+
+      BAN_EXPIRED_TIME_IN_SECOND: 600
+
+  redis:
+    restart: always
+    image: redis:7.0.7-alpine
+    expose:
+      - "6379:6379"
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass redis_password
+    volumes:
+      - ./volumes/redis:/data
+    environment:
+      - REDIS_PASSWORD=redis_password
+      - REDIS_PORT_NUMBER=6379
+  rabbitmq:
+    image: rabbitmq:3.11.5-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbit_mq_user
+      RABBITMQ_DEFAULT_PASS: rabbit_mq_password
+
+networks:
+  default:
+    driver: bridge
